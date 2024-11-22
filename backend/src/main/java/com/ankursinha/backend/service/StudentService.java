@@ -1,6 +1,7 @@
 package com.ankursinha.backend.service;
 
 import com.ankursinha.backend.dto.LoginRequest;
+import com.ankursinha.backend.entity.Placement;
 import com.ankursinha.backend.entity.Student;
 import com.ankursinha.backend.exception.StudentNotFoundException;
 import com.ankursinha.backend.helper.EncryptionService;
@@ -12,6 +13,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import static java.lang.String.format;
 
 
@@ -20,6 +24,12 @@ public class StudentService {
 
     @Autowired
     StudentRepo repo;
+
+    @Autowired
+    PlacementService placementService;
+
+    @Autowired
+    PlacementFilterService placementFilterService;
 
     @Autowired
     JWTHelper jwtHelper;
@@ -60,6 +70,23 @@ public class StudentService {
         }
         student.setPassword(encryptionService.encode(student.getPassword()));
         repo.save(student);
+    }
+
+    public List<Placement> getEligiblePlacements(Long studentId) {
+
+        Student student = repo.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        float cgpa = student.getCgpa();
+        int domainId = student.getDomain().getDomainId();
+        int specialisationId = student.getSpecialisation().getSpecialisationId();
+
+        List<Placement> placementsByCgpa = placementService.getEligiblePlacementsByCgpa(cgpa);
+        List<Placement> placementsByFilter = placementFilterService.getEligiblePlacements(domainId, specialisationId);
+
+        placementsByCgpa.retainAll(placementsByFilter);
+
+        return placementsByCgpa;
     }
 
 
