@@ -1,8 +1,12 @@
 package com.ankursinha.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "students")
@@ -47,4 +51,7 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "placement_id")
     private Placement placement;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 }
