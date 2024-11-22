@@ -43,7 +43,8 @@ CREATE TABLE students (
             graduation_year INT,
             domain INT,
             specialisation INT,
-            placement_id INT
+            placement_id INT,
+            password varchar(255)
 );
 
 CREATE TABLE placement_student (
