@@ -1,11 +1,14 @@
 package com.ankursinha.backend.service;
 
 import com.ankursinha.backend.dto.LoginRequest;
-import com.ankursinha.backend.entity.Placement;
+import com.ankursinha.backend.dto.LoginResponse;
+import com.ankursinha.backend.dto.StudentDetailsResponse;
 import com.ankursinha.backend.entity.Student;
 import com.ankursinha.backend.exception.StudentNotFoundException;
 import com.ankursinha.backend.helper.EncryptionService;
 import com.ankursinha.backend.helper.JWTHelper;
+import com.ankursinha.backend.repo.DomainRepo;
+import com.ankursinha.backend.repo.SpecialisationRepo;
 import com.ankursinha.backend.repo.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,22 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static java.lang.String.format;
-
 
 @Service
 public class StudentService {
 
     @Autowired
     StudentRepo repo;
-
-    @Autowired
-    PlacementService placementService;
-
-    @Autowired
-    PlacementFilterService placementFilterService;
 
     @Autowired
     JWTHelper jwtHelper;
@@ -40,7 +34,13 @@ public class StudentService {
     @Autowired
     EncryptionService encryptionService;
 
-    public String login(LoginRequest request) {
+    @Autowired
+    DomainRepo domainRepo;
+
+    @Autowired
+    SpecialisationRepo specialisationRepo;
+
+    public LoginResponse login(LoginRequest request) {
 
         Student student = repo.findByEmail(request.email());
 
@@ -49,10 +49,13 @@ public class StudentService {
         }
 
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-        if(auth.isAuthenticated())
-            return jwtHelper.generateToken(request.email());
+        if (!auth.isAuthenticated()) {
+            throw new BadCredentialsException("Invalid credentials provided");
+        }
 
-        throw new BadCredentialsException("Invalid credentials provided");
+        String jwtToken = jwtHelper.generateToken(request.email());
+
+        return new LoginResponse(jwtToken);
     }
 
     public void register(Student student) {
@@ -72,22 +75,24 @@ public class StudentService {
         repo.save(student);
     }
 
-    public List<Placement> getEligiblePlacements(Long studentId) {
+    public StudentDetailsResponse getStudentDetails(String email) {
+        Student student = repo.findByEmail(email);
 
-        Student student = repo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+        String domainName = domainRepo.findNameById(student.getDomain().getDomainId());
+        String specialisationName = specialisationRepo.findNameById(student.getSpecialisation().getSpecialisationId());
 
-        float cgpa = student.getCgpa();
-        int domainId = student.getDomain().getDomainId();
-        int specialisationId = student.getSpecialisation().getSpecialisationId();
-
-        List<Placement> placementsByCgpa = placementService.getEligiblePlacementsByCgpa(cgpa);
-        List<Placement> placementsByFilter = placementFilterService.getEligiblePlacements(domainId, specialisationId);
-
-        placementsByCgpa.retainAll(placementsByFilter);
-
-        return placementsByCgpa;
+        return new StudentDetailsResponse(
+                student.getStudentId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getCgpa(),
+                domainName,
+                specialisationName
+        );
     }
 
-
+    public Student getStudentById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
 }
