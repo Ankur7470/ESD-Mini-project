@@ -1,27 +1,8 @@
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import useLogin from "../hooks/useLogin";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:8080/login", {
-        email,
-        password,
-      });
-
-      localStorage.setItem("jwtToken", JSON.stringify(response.data.jwtToken));
-      navigate("/dashboard", { state: email });
-    } catch {
-      setError("Invalid credentials. Please try again.");
-    }
-  };
+  
+  const { email, setEmail, password, setPassword, error, handleLogin } = useLogin();
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700">
