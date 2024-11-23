@@ -1,9 +1,16 @@
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Apply from "./pages/Apply";
+
 const App = () => {
 
   return (
-    <>
-      <h1>ESD Mini Project</h1>
-    </>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/apply/:id" element={<Apply />} />
+      </Routes>
   );
   
 }
