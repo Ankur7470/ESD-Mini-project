@@ -1,7 +1,6 @@
 import useLogin from "../hooks/useLogin";
 
 const Login = () => {
-  
   const { email, setEmail, password, setPassword, error, handleLogin } = useLogin();
 
   return (

@@ -27,14 +27,15 @@ const StudentDetails = ({ studentDetails }) => {
 };
 
 StudentDetails.propTypes = {
-    studentDetails: PropTypes.shape({
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      cgpa: PropTypes.number.isRequired,
-      domainName: PropTypes.string.isRequired,
-      specialisationName : PropTypes.string.isRequired
-    }).isRequired,
+    studentDetails: PropTypes.object.isRequired
+    // studentDetails: PropTypes.shape({
+    //   firstName: PropTypes.string.isRequired,
+    //   lastName: PropTypes.string.isRequired,
+    //   email: PropTypes.string.isRequired,
+    //   cgpa: PropTypes.number.isRequired,
+    //   domainName: PropTypes.string.isRequired,
+    //   specialisationName : PropTypes.string.isRequired
+    // }).isRequired,
   };
   
 

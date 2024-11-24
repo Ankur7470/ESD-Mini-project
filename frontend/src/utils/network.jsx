@@ -21,3 +21,18 @@ export const apiGet = async (endpoint) => {
     throw err.response?.data?.message || "Failed to fetch data.";
   }
 };
+
+export const apiPost = async (endpoint, data) => {
+  const token = getAuthToken();
+  try {
+    const response = await axios.post(`${API_BASE_URL}${endpoint}`, data,  {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (err) {
+    throw err.response?.data?.message || "Failed to fetch data.";
+  }
+};
+
