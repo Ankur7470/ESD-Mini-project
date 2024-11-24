@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -33,5 +34,10 @@ public class PlacementStudent {
 
     @Column(name = "date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp date;
+
+    @PrePersist
+    protected void onCreate() {
+        this.date = Timestamp.valueOf(LocalDateTime.now());
+    }
 }
 
