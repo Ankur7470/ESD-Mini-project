@@ -92,7 +92,7 @@ public class StudentService {
         );
     }
 
-    public Student getStudentById(Long id) {
+    public Student getStudentById(Integer id) {
         return repo.findById(id).orElse(null);
     }
 }

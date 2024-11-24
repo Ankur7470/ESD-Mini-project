@@ -4,6 +4,8 @@ import com.ankursinha.backend.entity.PlacementStudent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface PlacementStudentRepo extends JpaRepository<PlacementStudent, Long> {
+public interface PlacementStudentRepo extends JpaRepository<PlacementStudent, Integer> {
 }

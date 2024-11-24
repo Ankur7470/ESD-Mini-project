@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlacementRepo extends JpaRepository<Placement, Long> {
+public interface PlacementRepo extends JpaRepository<Placement, Integer> {
     @Query("SELECT p FROM Placement p WHERE p.minimumGrade <= :cgpa")
     List<Placement> findEligiblePlacementsByCgpa(@Param("cgpa") float cgpa);
 
