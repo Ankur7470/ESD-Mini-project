@@ -3,6 +3,8 @@ package com.ankursinha.backend.controller;
 import com.ankursinha.backend.dto.PlacementApplicationRequest;
 import com.ankursinha.backend.dto.PlacementApplicationResponse;
 import com.ankursinha.backend.entity.Placement;
+import com.ankursinha.backend.entity.PlacementStudent;
+import com.ankursinha.backend.repo.PlacementStudentRepo;
 import com.ankursinha.backend.service.PlacementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,9 @@ public class PlacementController {
 
     @Autowired
     PlacementService placementService;
+
+    @Autowired
+    PlacementStudentRepo placementStudentRepo;
 
     @GetMapping("/{studentId}")
     public ResponseEntity<List<Placement>> getEligiblePlacements(@PathVariable Integer studentId) {
@@ -36,5 +41,21 @@ public class PlacementController {
                     .body(new PlacementApplicationResponse("Error: " + e.getMessage()));
         }
     }
+
+    @GetMapping("/applied/{studentId}")
+    public ResponseEntity<List<Placement>> getAppliedPlacements(@PathVariable Integer studentId) {
+        List<Placement> appliedPlacements = placementService.getAppliedPlacements(studentId);
+        return ResponseEntity.ok(appliedPlacements);
+    }
+
+    @GetMapping("/status/{studentId}/{placementId}")
+    public ResponseEntity<PlacementStudent> getPlacementStatus(
+            @PathVariable Integer studentId,
+            @PathVariable Integer placementId) {
+
+        PlacementStudent application = placementStudentRepo.findByStudentIdAndPlacementId(studentId, placementId);
+        return ResponseEntity.ok(application);
+    }
+
 
 }

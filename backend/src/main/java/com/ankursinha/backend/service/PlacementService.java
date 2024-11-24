@@ -89,4 +89,7 @@ public class PlacementService {
         placementStudentRepo.save(application);
     }
 
+    public List<Placement> getAppliedPlacements(Integer studentId) {
+        return placementStudentRepo.findAppliedPlacements(studentId);
+    }
 }
