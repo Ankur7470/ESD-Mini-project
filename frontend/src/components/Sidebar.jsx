@@ -19,14 +19,15 @@ const Sidebar = ({ studentDetails, onLogout }) => {
 };
 
 Sidebar.propTypes = {
-    studentDetails: PropTypes.shape({
-      studentId: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      course: PropTypes.string.isRequired,
-      branch: PropTypes.string.isRequired,
-      year: PropTypes.string.isRequired,
-    }).isRequired,
+    // studentDetails: PropTypes.shape({
+    //   studentId: PropTypes.number,
+    //   name: PropTypes.string,
+    //   email: PropTypes.string,
+    //   course: PropTypes.string,
+    //   branch: PropTypes.string,
+    //   year: PropTypes.string,
+    // }).isRequired,
+    studentDetails: PropTypes.object.isRequired,
     onLogout: PropTypes.func.isRequired,
   };
 
