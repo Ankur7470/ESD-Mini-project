@@ -12,5 +12,5 @@ import java.util.List;
 public interface PlacementRepo extends JpaRepository<Placement, Integer> {
     @Query("SELECT p FROM Placement p WHERE p.minimumGrade <= :cgpa")
     List<Placement> findEligiblePlacementsByCgpa(@Param("cgpa") float cgpa);
-
+    boolean existsByOrganisationAndProfile(String organisation, String profile);
 }

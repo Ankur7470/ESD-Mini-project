@@ -10,11 +10,14 @@ import com.ankursinha.backend.mapper.PlacementApplicationMapper;
 import com.ankursinha.backend.repo.PlacementRepo;
 import com.ankursinha.backend.repo.PlacementStudentRepo;
 import com.ankursinha.backend.repo.StudentRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,7 +70,7 @@ public class PlacementService {
 
         PlacementApplicationRequest request = placementApplicationMapper.mapToPlacementApplicationRequest(requestDTO);
 
-        String cvPath = fileStorageService.storeFile(request.cvFile());
+        String cvPath = fileStorageService.storeFile(request.cvFile(), "cvs");
 
         Student student = studentService.getStudentById(request.studentId());
         if (student == null) {
@@ -92,4 +95,18 @@ public class PlacementService {
     public List<Placement> getAppliedPlacements(Integer studentId) {
         return placementStudentRepo.findAppliedPlacements(studentId);
     }
+
+    public String updatePhotograph(Integer placementId, MultipartFile file) throws IOException {
+        Placement placement = placementRepo.findById(placementId)
+                .orElseThrow(() -> new IllegalArgumentException("Placement with ID " + placementId + " does not exist."));
+
+        String newPhotographPath = fileStorageService.storeFile(file, "companies_photos");
+
+        placement.setPhotographPath(newPhotographPath);
+
+        placementRepo.save(placement);
+
+        return newPhotographPath;
+    }
+
 }

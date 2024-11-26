@@ -25,4 +25,7 @@ public class Placement {
 
     @Column(name = "minimum_grade")
     private Float minimumGrade;
+
+    @Column(name = "photograph_path")
+    private String photographPath;
 }

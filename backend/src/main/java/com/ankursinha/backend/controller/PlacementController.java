@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -57,5 +58,16 @@ public class PlacementController {
         return ResponseEntity.ok(application);
     }
 
+@PostMapping("/updatePhotograph/{id}")
+public ResponseEntity<String> updatePhotograph(@PathVariable("id") Integer placementId,
+                                               @RequestPart("file") MultipartFile file) {
+    try {
+        String photographPath = placementService.updatePhotograph(placementId, file);
+
+        return ResponseEntity.ok("Photograph updated successfully. New path: " + photographPath);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
 
 }
