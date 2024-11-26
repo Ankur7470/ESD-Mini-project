@@ -3,12 +3,14 @@ package com.ankursinha.backend.controller;
 import com.ankursinha.backend.dto.LoginRequest;
 import com.ankursinha.backend.dto.LoginResponse;
 import com.ankursinha.backend.dto.StudentDetailsResponse;
-import com.ankursinha.backend.entity.Student;
+//import com.ankursinha.backend.entity.Student;
 import com.ankursinha.backend.service.StudentService;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class StudentController {
@@ -17,8 +19,14 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping("/register")
-    public void register(@RequestBody Student user) {
-        studentService.register(user);
+    public ResponseEntity<String> register(@RequestPart("student") String studentJson,
+                                           @RequestPart("file") MultipartFile file) {
+        try {
+            studentService.register(studentJson, file);
+            return ResponseEntity.ok("Student registered successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")

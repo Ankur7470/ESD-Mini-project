@@ -6,16 +6,21 @@ import com.ankursinha.backend.dto.StudentDetailsResponse;
 import com.ankursinha.backend.entity.Student;
 import com.ankursinha.backend.exception.StudentNotFoundException;
 import com.ankursinha.backend.helper.EncryptionService;
+import com.ankursinha.backend.helper.FileStorageService;
 import com.ankursinha.backend.helper.JWTHelper;
 import com.ankursinha.backend.repo.DomainRepo;
 import com.ankursinha.backend.repo.SpecialisationRepo;
 import com.ankursinha.backend.repo.StudentRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static java.lang.String.format;
 
@@ -40,6 +45,12 @@ public class StudentService {
     @Autowired
     SpecialisationRepo specialisationRepo;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     public LoginResponse login(LoginRequest request) {
 
         Student student = repo.findByEmail(request.email());
@@ -58,7 +69,12 @@ public class StudentService {
         return new LoginResponse(jwtToken);
     }
 
-    public void register(Student student) {
+    public void register(String studentJson, MultipartFile file) throws IOException {
+
+        Student student = objectMapper.readValue(studentJson, Student.class);
+
+        String filePath = fileStorageService.storeFile(file, "photos");;
+        student.setPhotographPath(filePath);
 
         if (student.getRollNum() == null || student.getEmail() == null || student.getPassword() == null) {
             throw new IllegalArgumentException("Roll number, email, and password are mandatory fields.");
@@ -71,6 +87,7 @@ public class StudentService {
         if (repo.existsByEmail(student.getEmail())) {
             throw new IllegalArgumentException("A student with the same email already exists.");
         }
+
         student.setPassword(encryptionService.encode(student.getPassword()));
         repo.save(student);
     }
@@ -88,9 +105,12 @@ public class StudentService {
                 student.getEmail(),
                 student.getCgpa(),
                 domainName,
-                specialisationName
+                specialisationName,
+                student.getPhotographPath()
         );
     }
+
+
 
     public Student getStudentById(Integer id) {
         return repo.findById(id).orElse(null);

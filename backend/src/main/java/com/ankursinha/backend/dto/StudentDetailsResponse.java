@@ -7,7 +7,8 @@ public record StudentDetailsResponse(
         String email,
         Float cgpa,
         String domainName,
-        String specialisationName
+        String specialisationName,
+        String photographPath
 ) {}
 
 
