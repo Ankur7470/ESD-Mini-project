@@ -73,7 +73,7 @@ public class StudentService {
 
         Student student = objectMapper.readValue(studentJson, Student.class);
 
-        String filePath = fileStorageService.storeFile(file, "photos");;
+        String filePath = fileStorageService.storeFile(file, "photos");
         student.setPhotographPath(filePath);
 
         if (student.getRollNum() == null || student.getEmail() == null || student.getPassword() == null) {
