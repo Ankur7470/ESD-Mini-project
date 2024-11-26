@@ -5,8 +5,17 @@ const StudentDetails = ({ studentDetails }) => {
     return <p className="text-gray-500">No student details available.</p>;
   }
 
+  const API_BASE_URL = 'http://localhost:8080/'
+
   return (
     <div className="space-y-4 text-gray-700">
+      <div>
+        <img
+          src={`${API_BASE_URL}${studentDetails.photographPath}`}
+          className="w-[200px] h-[180px] rounded-lg border border-gray-300"
+        />
+      </div>
+
       <p>
         <strong className="text-gray-600">Name:</strong> {studentDetails.firstName} {studentDetails.lastName}
       </p>
@@ -27,16 +36,8 @@ const StudentDetails = ({ studentDetails }) => {
 };
 
 StudentDetails.propTypes = {
-    studentDetails: PropTypes.object.isRequired
-    // studentDetails: PropTypes.shape({
-    //   firstName: PropTypes.string.isRequired,
-    //   lastName: PropTypes.string.isRequired,
-    //   email: PropTypes.string.isRequired,
-    //   cgpa: PropTypes.number.isRequired,
-    //   domainName: PropTypes.string.isRequired,
-    //   specialisationName : PropTypes.string.isRequired
-    // }).isRequired,
-  };
-  
+  studentDetails: PropTypes.object.isRequired
+};
+
 
 export default StudentDetails;
