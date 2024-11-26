@@ -13,15 +13,23 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-    public String storeFile(MultipartFile file) throws IOException {
+private static final String BASE_UPLOAD_DIR = "src/main/resources/static/";
+
+    public String storeFile(MultipartFile file, String subDirectory) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Cannot store an empty file.");
+        }
+
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        String uploadDir = "uploads/cvs/";
+
+        String uploadDir = BASE_UPLOAD_DIR + subDirectory + "/";
         Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
 
         Files.createDirectories(filePath.getParent());
 
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return filePath.toString();
+        return subDirectory + '/' + fileName;
     }
+
 }
