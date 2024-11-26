@@ -8,6 +8,8 @@ const PlacementCard = ({ placement, isApplied, studentDetails }) => {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
 
+  const API_BASE_URL = 'http://localhost:8080/';
+
   const closeModal = () => {
     setModalOpen(false);
     setShowApplyModal(false);
@@ -38,7 +40,7 @@ const PlacementCard = ({ placement, isApplied, studentDetails }) => {
               setShowStatusModal(true);
               setModalOpen(true);
             }}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 ease-in-out active:scale-95"
+            className="mt-4 px-4 py-2 text-blue-900 border-2 rounded-lg shadow-md hover:shadow-lg hover:scale-105 focus:ring-2 transition-all duration-300 ease-in-out active:scale-95"
           >
             Check Status
           </button>
@@ -48,13 +50,18 @@ const PlacementCard = ({ placement, isApplied, studentDetails }) => {
               setShowApplyModal(true);
               setModalOpen(true);
             }}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 ease-in-out active:scale-95"
+            className="mt-4 px-4 py-2 bg-blue-900 text-white roubg-blue-900 rounded-lg shadow-md hover:bg-blue-900 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all duration-300 ease-in-out active:scale-95"
           >
             Apply
           </button>
         )}
       </div>
-      <div className="w-2/5 bg-gradient-to-tr from-indigo-300 via-blue-200 to-green-200 rounded-lg opacity-70"></div>
+      <div className="w-2/5 bg-gradient-to-tr from-indigo-300 via-blue-200 to-green-200 rounded-lg opacity-70">
+        <img
+          src={`${API_BASE_URL}${placement.photographPath}`}
+          className="w-[350px] h-[180px] rounded-lg border border-gray-300 filter brightness-20 saturate-300"
+        />
+      </div>
 
       {showApplyModal && isModalOpen && (
         <ApplyModal
@@ -83,6 +90,7 @@ PlacementCard.propTypes = {
     description: PropTypes.string,
     intake: PropTypes.number.isRequired,
     minimumGrade: PropTypes.number.isRequired,
+    photographPath: PropTypes.string,
   }).isRequired,
   isApplied: PropTypes.bool.isRequired,
   studentDetails: PropTypes.object.isRequired,

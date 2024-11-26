@@ -4,7 +4,7 @@ const Login = () => {
   const { email, setEmail, password, setPassword, error, handleLogin } = useLogin();
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 to-indigo-800">
       <div className="bg-white shadow-xl rounded-lg p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
           Welcome Back!

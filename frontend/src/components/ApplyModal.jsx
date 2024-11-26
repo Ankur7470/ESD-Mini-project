@@ -18,6 +18,10 @@ const ApplyModal = ({ placement, closeModal, studentDetails }) => {
     applyForPlacement({placementId: placement.id,studentId: studentDetails.studentId,
       cvFile, about, closeModal,
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 200);
+    
   };
 
   const handleClose = () => {
@@ -127,11 +131,6 @@ const ApplyModal = ({ placement, closeModal, studentDetails }) => {
 
 ApplyModal.propTypes = {
   placement: PropTypes.object.isRequired,
-  // placement: PropTypes.shape({
-  //   id: PropTypes.number.isRequired,
-  //   organisation: PropTypes.string.isRequired,
-  //   profile: PropTypes.string.isRequired,
-  // }).isRequired,
   closeModal: PropTypes.func,
   studentDetails: PropTypes.object.isRequired,
 };

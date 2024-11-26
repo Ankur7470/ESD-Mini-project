@@ -5,7 +5,7 @@ const Sidebar = ({ studentDetails, onLogout }) => {
   return (
     <div className="w-1/4 bg-white shadow-lg p-6 flex flex-col justify-between fixed top-0 bottom-0 left-0 rounded-r-3xl">
       <div>
-        <h2 className="text-2xl font-semibold text-indigo-600 mt-8 mb-6">Student Details</h2>
+        <h2 className="text-2xl font-semibold text-gray-500 mt-4 mb-6">Student Profile</h2>
         <StudentDetails studentDetails={studentDetails} />
       </div>
       <button

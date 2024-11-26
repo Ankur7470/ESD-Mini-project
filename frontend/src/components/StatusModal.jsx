@@ -40,21 +40,12 @@ const StatusModal = ({ placementId, studentId, closeModal }) => {
         <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
           Application Status
         </h2>
-        <p className="text-lg text-gray-700 mb-2">
-          <strong>Placement:</strong> {placementId}
-        </p>
-        <p className="text-lg text-gray-700 mb-6">
-          <strong>Student ID:</strong> {studentId}
-        </p>
-
+  
         {loading && <div>Loading...</div>}
         {error && <div>Error: {error.message}</div>}
 
         {!loading && !error && (
           <div className="mt-4 space-y-4">
-            <p className="text-lg text-gray-600">
-              <strong>CV Application:</strong> {status?.cvApplication || "No application found"}
-            </p>
             <p className="text-lg text-gray-600">
               <strong>About:</strong> {status?.about || "No information provided"}
             </p>
