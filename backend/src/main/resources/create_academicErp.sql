@@ -21,7 +21,8 @@ CREATE TABLE placement (
             profile VARCHAR(255),
             description TEXT,
             intake INT,
-            minimum_grade FLOAT
+            minimum_grade FLOAT,
+            photograph_path VARCHAR(255)
 );
 
 CREATE TABLE placement_filter (
