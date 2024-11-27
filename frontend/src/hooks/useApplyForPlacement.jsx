@@ -14,7 +14,6 @@ const useApplyForPlacement = () => {
       try {
         const response = await apiPost('/placements/apply', formData);
         if (response.status === 200) {
-          alert('Application submitted successfully!');
           setIsApplied(true);
           closeModal();
         } else {
