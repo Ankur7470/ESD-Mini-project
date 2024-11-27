@@ -4,22 +4,19 @@ import com.ankursinha.backend.dto.PlacementApplicationRequest;
 import com.ankursinha.backend.entity.Placement;
 import com.ankursinha.backend.entity.PlacementStudent;
 import com.ankursinha.backend.entity.Student;
+import com.ankursinha.backend.exception.FileStorageException;
+import com.ankursinha.backend.exception.PlacementNotFoundException;
 import com.ankursinha.backend.exception.StudentNotFoundException;
 import com.ankursinha.backend.helper.FileStorageService;
 import com.ankursinha.backend.mapper.PlacementApplicationMapper;
 import com.ankursinha.backend.repo.PlacementRepo;
 import com.ankursinha.backend.repo.PlacementStudentRepo;
-import com.ankursinha.backend.repo.StudentRepo;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -70,7 +67,12 @@ public class PlacementService {
 
         PlacementApplicationRequest request = placementApplicationMapper.mapToPlacementApplicationRequest(requestDTO);
 
-        String cvPath = fileStorageService.storeFile(request.cvFile(), "cvs");
+        String cvPath;
+        try {
+            cvPath = fileStorageService.storeFile(request.cvFile(), "cvs");
+        } catch (IOException e) {
+            throw new FileStorageException("Failed to store CV file", e);
+        }
 
         Student student = studentService.getStudentById(request.studentId());
         if (student == null) {
@@ -78,22 +80,18 @@ public class PlacementService {
         }
 
         Placement placement = placementRepo.findById(request.placementId())
-                .orElseThrow(() -> new RuntimeException("Placement not found with ID: " + request.placementId()));
+                .orElseThrow(() -> new PlacementNotFoundException("Placement not found with ID: " + request.placementId()));
 
         PlacementStudent application = new PlacementStudent();
         application.setPlacement(placement);
         application.setStudent(student);
         application.setCvApplication(cvPath);
         application.setAbout(request.about());
-        application.setAcceptance(false); // Default value
-        application.setComments("Pending review"); // Default value
+        application.setAcceptance(false);
+        application.setComments("Pending review");
         application.setDate(Timestamp.valueOf(LocalDateTime.now()));
 
         placementStudentRepo.save(application);
-    }
-
-    public List<Placement> getAppliedPlacements(Integer studentId) {
-        return placementStudentRepo.findAppliedPlacements(studentId);
     }
 
     public String updatePhotograph(Integer placementId, MultipartFile file) throws IOException {

@@ -4,12 +4,12 @@ import com.ankursinha.backend.dto.LoginRequest;
 import com.ankursinha.backend.dto.LoginResponse;
 import com.ankursinha.backend.dto.StudentDetailsResponse;
 import com.ankursinha.backend.entity.Student;
+import com.ankursinha.backend.exception.DuplicateStudentException;
+import com.ankursinha.backend.exception.FileStorageException;
 import com.ankursinha.backend.exception.StudentNotFoundException;
 import com.ankursinha.backend.helper.EncryptionService;
 import com.ankursinha.backend.helper.FileStorageService;
 import com.ankursinha.backend.helper.JWTHelper;
-import com.ankursinha.backend.repo.DomainRepo;
-import com.ankursinha.backend.repo.SpecialisationRepo;
 import com.ankursinha.backend.repo.StudentRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +40,10 @@ public class StudentService {
     EncryptionService encryptionService;
 
     @Autowired
-    DomainRepo domainRepo;
+    DomainService domainService;
 
     @Autowired
-    SpecialisationRepo specialisationRepo;
+    SpecialisationService specialisationService;
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -73,30 +73,41 @@ public class StudentService {
 
         Student student = objectMapper.readValue(studentJson, Student.class);
 
-        String filePath = fileStorageService.storeFile(file, "photos");
-        student.setPhotographPath(filePath);
-
         if (student.getRollNum() == null || student.getEmail() == null || student.getPassword() == null) {
             throw new IllegalArgumentException("Roll number, email, and password are mandatory fields.");
         }
 
         if (repo.existsByRollNum(student.getRollNum())) {
-            throw new IllegalArgumentException("A student with the same roll number already exists.");
+            throw new DuplicateStudentException("A student with the same roll number already exists.");
         }
 
         if (repo.existsByEmail(student.getEmail())) {
-            throw new IllegalArgumentException("A student with the same email already exists.");
+            throw new DuplicateStudentException("A student with the same email already exists.");
         }
 
         student.setPassword(encryptionService.encode(student.getPassword()));
+
+        String filePath;
+        try {
+            filePath = fileStorageService.storeFile(file, "photos");
+        } catch (IOException e) {
+            throw new FileStorageException("Failed to store student photo", e);
+        }
+
+        student.setPhotographPath(filePath);
+
         repo.save(student);
+    }
+
+    public Student getStudentById(Integer id) {
+        return repo.findById(id).orElse(null);
     }
 
     public StudentDetailsResponse getStudentDetails(String email) {
         Student student = repo.findByEmail(email);
 
-        String domainName = domainRepo.findNameById(student.getDomain().getDomainId());
-        String specialisationName = specialisationRepo.findNameById(student.getSpecialisation().getSpecialisationId());
+        String domainName = domainService.getNameById(student.getDomain().getDomainId());
+        String specialisationName = specialisationService.getNameById(student.getSpecialisation().getSpecialisationId());
 
         return new StudentDetailsResponse(
                 student.getStudentId(),
@@ -110,9 +121,18 @@ public class StudentService {
         );
     }
 
+    public void updatePhotograph(Integer studentId, MultipartFile file) {
+        Student student = repo.findByStudentId(studentId);
 
+        String newFilePath;
+        try {
+            newFilePath = fileStorageService.storeFile(file, "photos");
+        } catch (IOException e) {
+            throw new FileStorageException("Failed to store student photo", e);
+        }
 
-    public Student getStudentById(Integer id) {
-        return repo.findById(id).orElse(null);
+        student.setPhotographPath(newFilePath);
+
+        repo.save(student);
     }
 }

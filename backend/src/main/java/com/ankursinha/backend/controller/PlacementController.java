@@ -4,8 +4,8 @@ import com.ankursinha.backend.dto.PlacementApplicationRequest;
 import com.ankursinha.backend.dto.PlacementApplicationResponse;
 import com.ankursinha.backend.entity.Placement;
 import com.ankursinha.backend.entity.PlacementStudent;
-import com.ankursinha.backend.repo.PlacementStudentRepo;
 import com.ankursinha.backend.service.PlacementService;
+import com.ankursinha.backend.service.PlacementStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class PlacementController {
     PlacementService placementService;
 
     @Autowired
-    PlacementStudentRepo placementStudentRepo;
+    PlacementStudentService placementStudentService;
 
     @GetMapping("/{studentId}")
     public ResponseEntity<List<Placement>> getEligiblePlacements(@PathVariable Integer studentId) {
@@ -45,7 +45,7 @@ public class PlacementController {
 
     @GetMapping("/applied/{studentId}")
     public ResponseEntity<List<Placement>> getAppliedPlacements(@PathVariable Integer studentId) {
-        List<Placement> appliedPlacements = placementService.getAppliedPlacements(studentId);
+        List<Placement> appliedPlacements = placementStudentService.getAppliedPlacements(studentId);
         return ResponseEntity.ok(appliedPlacements);
     }
 
@@ -54,20 +54,20 @@ public class PlacementController {
             @PathVariable Integer studentId,
             @PathVariable Integer placementId) {
 
-        PlacementStudent application = placementStudentRepo.findByStudentIdAndPlacementId(studentId, placementId);
+        PlacementStudent application = placementStudentService.getByStudentIdandPlacementId(studentId, placementId);
         return ResponseEntity.ok(application);
     }
 
-@PostMapping("/updatePhotograph/{id}")
-public ResponseEntity<String> updatePhotograph(@PathVariable("id") Integer placementId,
+    @PostMapping("/updatePhotograph/{id}")
+    public ResponseEntity<String> updatePhotograph(@PathVariable("id") Integer placementId,
                                                @RequestPart("file") MultipartFile file) {
-    try {
-        String photographPath = placementService.updatePhotograph(placementId, file);
+        try {
+            String photographPath = placementService.updatePhotograph(placementId, file);
 
-        return ResponseEntity.ok("Photograph updated successfully. New path: " + photographPath);
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok("Photograph updated successfully. New path: " + photographPath);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-}
 
 }

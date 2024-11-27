@@ -3,9 +3,7 @@ package com.ankursinha.backend.controller;
 import com.ankursinha.backend.dto.LoginRequest;
 import com.ankursinha.backend.dto.LoginResponse;
 import com.ankursinha.backend.dto.StudentDetailsResponse;
-//import com.ankursinha.backend.entity.Student;
 import com.ankursinha.backend.service.StudentService;
-//import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +37,17 @@ public class StudentController {
     public ResponseEntity<StudentDetailsResponse> getStudentDetails(@PathVariable String email) {
         StudentDetailsResponse res = studentService.getStudentDetails(email);
         return ResponseEntity.ok(res);
+    }
+
+    @PutMapping("/{id}/update-photo")
+    public ResponseEntity<String> updatePhotograph(@PathVariable("id") Integer studentId,
+                                                   @RequestPart("file") MultipartFile file) {
+        try {
+            studentService.updatePhotograph(studentId, file);
+            return ResponseEntity.ok("Student photograph updated successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

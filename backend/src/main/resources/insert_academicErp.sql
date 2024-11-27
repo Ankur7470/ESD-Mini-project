@@ -1,65 +1,43 @@
 INSERT INTO domains (program, batch, capacity, qualification) VALUES
-        ('Computer Science', 'Batch A', 50, 'Bachelors'),
-        ('Mechanical Engineering', 'Batch B', 60, 'Bachelors'),
-        ('Electrical Engineering', 'Batch C', 40, 'Bachelors'),
-        ('Civil Engineering', 'Batch D', 70, 'Bachelors'),
-        ('Information Technology', 'Batch E', 55, 'Bachelors'),
-        ('Chemical Engineering', 'Batch F', 45, 'Bachelors'),
-        ('Aerospace Engineering', 'Batch G', 50, 'Bachelors');
+        ('B.Tech Computer Science', '2024', 120, 'Bachelor'),
+        ('B.Tech Electronics', '2024', 80, 'Bachelor'),
+        ('M.Tech Data Science', '2024', 60, 'Master'),
+        ('MBA Marketing', '2024', 100, 'Master');
 
 INSERT INTO specialisation (code, name, description, year, credits_required) VALUES
-        ('CS101', 'Artificial Intelligence', 'Introduction to AI', 1, 20),
-        ('CS102', 'Data Science', 'Introduction to Data Science', 2, 18),
-        ('CS103', 'Machine Learning', 'Advanced Machine Learning', 3, 22),
-        ('ME101', 'Thermodynamics', 'Introduction to Thermodynamics', 1, 20),
-        ('ME102', 'Fluid Mechanics', 'Basic Fluid Mechanics', 2, 18),
-        ('EE101', 'Electrical Circuits', 'Basic Electrical Circuits', 1, 20),
-        ('CE101', 'Structural Analysis', 'Fundamentals of Structural Analysis', 1, 20),
-        ('IT101', 'Web Development', 'Frontend and backend development', 1, 18),
-        ('CH101', 'Process Engineering', 'Chemical process optimization', 2, 20),
-        ('AE101', 'Aerospace Dynamics', 'Aerodynamics and propulsion', 1, 22);
+        ('CS101', 'Artificial Intelligence', 'Focus on AI and Machine Learning', 2024, 48),
+        ('EE201', 'Embedded Systems', 'Specialisation in embedded system design', 2024, 42),
+        ('DS301', 'Data Analytics', 'Emphasis on data analytics and visualization', 2024, 48),
+        ('MK401', 'Digital Marketing', 'Focus on digital strategies for marketing', 2024, 48);
 
 INSERT INTO placement (organisation, profile, description, intake, minimum_grade) VALUES
-        ('ABC Corp', 'Software Engineer', 'Develop software solutions', 30, 7),
-        ('XYZ Ltd', 'Data Analyst', 'Analyze data to derive insights', 25, 6.5),
-        ('Tech Solutions', 'Data Scientist', 'Develop AI solutions', 20, 7.5),
-        ('Innovatech', 'Cloud Engineer', 'Build cloud infrastructures', 15, 6.8),
-        ('GlobalTech', 'Full Stack Developer', 'Develop web applications', 40, 7),
-        ('Fintech Inc', 'Financial Analyst', 'Analyze financial data', 35, 7.2),
-        ('AutoMotive', 'Mechanical Engineer', 'Design and optimize mechanical systems', 30, 7.3),
-        ('CodeWave', 'Frontend Developer', 'Create engaging web interfaces', 25, 7),
-        ('DataCrunch', 'Data Engineer', 'Develop and manage data pipelines', 20, 7.5),
-        ('SkyTech', 'Aerospace Engineer', 'Innovate in aerospace systems', 10, 8),
-        ('EcoChem', 'Chemical Engineer', 'Design eco-friendly chemical processes', 30, 7.2);
---
-INSERT INTO students (roll_num, first_name, last_name, email, photograph_path, cgpa, total_credits, graduation_year, domain, specialisation, placement_id)
-VALUES
-        ('CS101', 'Emma', 'Stone', 'emma.stone@example.com', '/images/emma.jpg', 8.2, 45, 2024, 1, 1, 1),
-        ('CS102', 'John', 'Doe', 'john.doe@example.com', '/images/john.jpg', 7.8, 20, 2024, 1, 2, 2),
-        ('ME101', 'Alice', 'Johnson', 'alice.johnson@example.com', '/images/alice.jpg', 7.5, 32, 2024, 2, 4, 7),
-        ('EE101', 'Bob', 'Williams', 'bob.williams@example.com', '/images/bob.jpg', 6.9, 34, 2024, 3, 6, 4),
-        ('IT101', 'Sophia', 'Brown', 'sophia.brown@example.com', '/images/sophia.jpg', 8.5, 50, 2025, 4, 7, 8),
-        ('CH101', 'Liam', 'Green', 'liam.green@example.com', '/images/liam.jpg', 7.6, 40, 2025, 5, 8, 9),
-        ('AE101', 'Mia', 'Taylor', 'mia.taylor@example.com', '/images/mia.jpg', 9.0, 60, 2025, 6, 9, 10);
---
-INSERT INTO placement_student (placement_id, student_id, cv_application, about, acceptance, comments)
-VALUES
-        (1, 1, '/cv/emma_cv.pdf', 'Enthusiastic about software development', 1, 'Great potential for this role'),
-        (2, 2, '/cv/john_cv.pdf', 'Passionate about data analytics', 1, 'Strong analytical skills'),
-        (7, 3, '/cv/alice_cv.pdf', 'Interested in thermodynamics research', 0, 'Needs to improve subject understanding'),
-        (4, 4, '/cv/bob_cv.pdf', 'Looking for a career in electrical circuits', NULL, 'Pending review'),
-        (8, 5, '/cv/sophia_cv.pdf', 'Passionate about web development', 1, 'Great problem-solving skills'),
-        (9, 6, '/cv/liam_cv.pdf', 'Interested in process optimization', 1, 'Promising candidate for chemical engineering roles'),
-        (10, 7, '/cv/mia_cv.pdf', 'Aiming for innovation in aerospace engineering', NULL, 'Pending detailed interview');
+        ('Google', 'Software Engineer', 'Develop scalable software solutions.', 20, 8.5),
+        ('Amazon', 'Data Analyst', 'Analyze and interpret large datasets.', 15, 8.0),
+        ('Intel', 'Hardware Engineer', 'Design and test embedded systems.', 10, 7.5),
+        ('Tata Consultancy', 'Digital Marketing Executive', 'Manage digital campaigns.', 25, 7.0),
+        ('Microsoft', 'Cloud Engineer', 'Develop and deploy cloud solutions.', 15, 8.0),
+        ('Flipkart', 'Business Analyst', 'Support strategic decisions through data.', 12, 7.5),
+        ('Infosys', 'Software Developer', 'Develop business software solutions.', 30, 7.0),
+        ('HCL', 'System Engineer', 'Manage IT infrastructure.', 20, 7.5),
+        ('Capgemini', 'Data Engineer', 'Build data pipelines and solutions.', 15, 7.8),
+        ('Deloitte', 'Consultant', 'Provide strategic business consulting.', 25, 8.0),
+        ('Cisco', 'Network Engineer', 'Design and maintain network systems.', 15, 8.2),
+        ('Accenture', 'Cloud Consultant', 'Implement cloud-based solutions.', 20, 8.0),
+        ('Paytm', 'Product Manager', 'Manage and enhance product offerings.', 10, 8.3),
+        ('Wipro', 'Cybersecurity Analyst', 'Ensure cybersecurity for clients.', 12, 7.9);
 
-INSERT INTO placement_filter (placement_id, specialisation, domain)
-VALUES
-         (1, 1, 1),
-         (2, 2, 1),
-         (3, 3, 1),
-         (7, 4, 2),
-         (5, NULL, 1),
-         (6, NULL, 3),
-         (8, 7, 4),
-         (9, 8, 5),
-         (10, 9, 6);
+INSERT INTO placement_filter (placement_id, specialisation, domain) VALUES
+        (1, 1, 1),
+        (2, 3, 1),
+        (3, 2, 2),
+        (4, 4, 4),
+        (5, 1, 1),
+        (6, 3, 1),
+        (7, 1, 1),
+        (8, 3, 1),
+        (9, 3, 1),
+        (10, 4, 4),
+        (11, 2, 2),
+        (12, 1, 1),
+        (13, 1, 1),
+        (14, 2, 2);
