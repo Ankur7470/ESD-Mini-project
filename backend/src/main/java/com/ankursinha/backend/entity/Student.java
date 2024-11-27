@@ -48,8 +48,7 @@ public class Student {
     @JoinColumn(name = "specialisation", nullable = false)
     private Specialisation specialisation;
 
-//    @ManyToOne
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "placement_id")
     private Placement placement;
 
