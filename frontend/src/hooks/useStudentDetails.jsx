@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
 import { apiGet } from "../utils/network";
+import { jwtDecode } from "jwt-decode";
 
-const useStudentDetails = (email) => {
+
+const useStudentDetails = () => {
   const [studentDetails, setStudentDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+
     const fetchStudentDetails = async () => {
       setLoading(true);
       try {
+        const token = localStorage.getItem("jwtToken");
+        const decoded = jwtDecode(token); 
+        const email = decoded.sub;
         const data = await apiGet(`/details/${email}`);
         setStudentDetails(data);
       } catch (err) {
@@ -20,7 +26,7 @@ const useStudentDetails = (email) => {
     };
 
     fetchStudentDetails();
-  }, [email]);
+  }, []);
 
   return { studentDetails, loading, error };
 };
