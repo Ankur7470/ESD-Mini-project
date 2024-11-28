@@ -12,8 +12,8 @@ const useLogin = () => {
     e.preventDefault();
     try {
       const data = await loginUser(email, password);
-      localStorage.setItem("jwtToken", JSON.stringify(data.jwtToken));
-      navigate("/dashboard", { state: email });
+      localStorage.setItem("jwtToken", data.jwtToken);
+      navigate("/dashboard");
     } catch {
       setError("Invalid credentials. Please try again.");
     }

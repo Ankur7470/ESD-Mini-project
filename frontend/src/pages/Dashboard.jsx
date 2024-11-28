@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import PlacementList from "../components/PlacementList";
 import Loading from "../components/Loading";
@@ -8,18 +8,12 @@ import useEligiblePlacements from "../hooks/useEligiblePlacements";
 import useAppliedPlacements from "../hooks/useAppliedPlacements"; 
 
 const Dashboard = () => {
-  const location = useLocation();
-  const email = location.state;
+
   const navigate = useNavigate();
 
-  const { studentDetails, loading: studentLoading, error: studentError } = useStudentDetails(email);
-  const { placements, loading: placementsLoading, error: placementsError } = useEligiblePlacements(
-    studentDetails?.studentId
-  );
-
-  const { appliedPlacements, loading: appliedLoading, error: appliedError } = useAppliedPlacements(
-    studentDetails?.studentId
-  ); 
+  const { studentDetails, loading: studentLoading, error: studentError } = useStudentDetails();
+  const { placements, loading: placementsLoading, error: placementsError } = useEligiblePlacements(studentDetails?.studentId);
+  const { appliedPlacements, loading: appliedLoading, error: appliedError } = useAppliedPlacements(studentDetails?.studentId); 
 
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
