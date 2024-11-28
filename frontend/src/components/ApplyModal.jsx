@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useApplyForPlacement from '../hooks/useApplyForPlacement'; 
+import {  message } from 'antd';
 
 const ApplyModal = ({ placement, closeModal, studentDetails }) => {
   const [cvFile, setCvFile] = useState(null);
   const [about, setAbout] = useState('');
   const [isVisible, setIsVisible] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const { isApplied, applyForPlacement } = useApplyForPlacement();
 
@@ -13,11 +15,16 @@ const ApplyModal = ({ placement, closeModal, studentDetails }) => {
     setIsVisible(true);
   }, []);
 
+  const success = () => {
+    messageApi.open({type: 'success',content: 'Application Submitted Successfully!!!'});
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    success();
     applyForPlacement({placementId: placement.id,studentId: studentDetails.studentId,
       cvFile, about, closeModal,
-    });
+    });  
     setTimeout(() => {
       window.location.reload();
     }, 200);
@@ -26,9 +33,7 @@ const ApplyModal = ({ placement, closeModal, studentDetails }) => {
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(() => {
-      closeModal();
-    }, 300);
+    setTimeout(() => { closeModal() }, 300);
   };
 
   return (
@@ -37,8 +42,9 @@ const ApplyModal = ({ placement, closeModal, studentDetails }) => {
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
+      {contextHolder}
       <div
-        className={`bg-white p-6 rounded-xl shadow-lg w-full max-w-md mx-4 transform transition-all duration-300 ${
+        className={`bg-white p-4 rounded-xl shadow-lg w-full max-w-md mx-4 transform transition-all duration-300 ${
           isVisible ? 'scale-100' : 'scale-90'
         }`}
       >
@@ -69,6 +75,19 @@ const ApplyModal = ({ placement, closeModal, studentDetails }) => {
               id="email"
               name="email"
               defaultValue={studentDetails.email}
+              readOnly
+              className="mt-1 block w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 text-gray-700 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label htmlFor="grade" className="block text-sm font-medium text-gray-700">
+              Grade
+            </label>
+            <input
+              type="text"
+              id="grade"
+              name="grade"
+              defaultValue={studentDetails.cgpa}
               readOnly
               className="mt-1 block w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 text-gray-700 focus:ring-indigo-500 focus:border-indigo-500"
             />
