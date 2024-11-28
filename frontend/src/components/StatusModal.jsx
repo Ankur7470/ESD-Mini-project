@@ -1,30 +1,22 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import useApplicationStatus from "../hooks/useApplicationStatus";
+import DownloadButton from "./DownloadButton";
 
 const StatusModal = ({ placementId, studentId, closeModal }) => {
   const { status, loading, error } = useApplicationStatus(studentId, placementId);
   const [isVisible, setIsVisible] = useState(false); 
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true); 
-    const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 20); 
-
-    return () => clearTimeout(timer); 
   }, []);
 
   const handleClose = () => {
     setIsVisible(false); 
     setTimeout(() => {
-      setIsMounted(false); 
       closeModal(); 
     }, 300); 
   };
-
-  if (!isMounted) return null;
 
   return (
     <div
@@ -46,6 +38,10 @@ const StatusModal = ({ placementId, studentId, closeModal }) => {
 
         {!loading && !error && (
           <div className="mt-4 space-y-4">
+            <div className="flex items-center">
+              <p className="text-lg text-gray-600"><strong>Your Uploaded CV: </strong></p>
+              <DownloadButton status={status}/>
+            </div>
             <p className="text-lg text-gray-600">
               <strong>About:</strong> {status?.about || "No information provided"}
             </p>
