@@ -5,7 +5,7 @@ const API_BASE_URL = "http://localhost:8080";
 const getAuthToken = () => {
   const token = localStorage.getItem("jwtToken");
   if (!token) throw new Error("Missing or invalid token. Please log in again.");
-  return JSON.parse(token);
+  return token;
 };
 
 export const apiGet = async (endpoint) => {
